@@ -1,7 +1,6 @@
 import LogInScreen from "./auth/LogInScreen/LogInScreen";
 import SideBar from "./pages/SideBar/SideBar";
 import TopBar from "./pages/TopBar/TopBar";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import "./App.css";
 import { useAuthContext } from "./context/AuthContext";
@@ -32,7 +31,6 @@ const animationTransition: Transition = {
 
 const App = () => {
   const { isAuthorized } = useAuthContext();
-  const [menuExpand, toggleMenuExpand] = useState(false);
 
   return (
     <>
@@ -59,15 +57,8 @@ const App = () => {
                 transition={animationTransition}
                 className="app-container"
               >
-                <SideBar
-                  menuExpand={menuExpand}
-                  toggleMenuExpand={toggleMenuExpand}
-                />
-                <TopBar
-                  menuExpand={menuExpand}
-                  toggleMenuExpand={toggleMenuExpand}
-                />
-                <Dashboard />
+                <SideBar />
+                <TopBar />
               </motion.div>
             </MenuProvider>
           )}
