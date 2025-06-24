@@ -1,0 +1,175 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*=== BG Images ===*/
+.bg-img {
+  position: absolute;
+  z-index: -1;
+
+  width: 100%;
+
+  filter: var(--login-bg-filter);
+  transition: all 0.5s ease;
+}
+
+/*=== Toggle Light/Dark mode ===*/
+.theme-toggle-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 16px;
+
+  width: 48px;
+  height: 48px;
+
+  background: var(--bg-primary);
+  border: 3px solid var(--border-primary);
+  border-radius: 50%;
+
+  outline: none;
+  cursor: pointer;
+  overflow: hidden;
+
+  transition: all 0.5s ease;
+}
+
+.theme-toggle-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+.theme-toggle-icon {
+  font-size: 32px;
+  color: var(--text-primary);
+}
+
+/*=== Log In Menu ===*/
+.log-in-menu {
+  padding: 40px;
+
+  width: 100%;
+  max-width: 400px;
+
+  background: var(--bg-primary);
+  border: 3px solid var(--border-primary);
+  border-radius: 24px;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.75);
+
+  transition: all 0.5s ease;
+}
+
+.log-in-menu:hover {
+  transform: translateY(-5px);
+}
+
+.log-in-menu header {
+  margin-bottom: 40px;
+  text-align: center;
+  transition: all 0.5s ease;
+}
+
+.log-in-menu h2 {
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.log-in-menu img {
+  width: 50px;
+}
+
+/*=== Username and Password ===*/
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+
+  position: relative;
+
+  background-color: aliceblue;
+  border: 2px solid #ababab;
+  border-radius: 12px;
+
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  scale: 1.025;
+  border: 2px solid var(--red-500);
+  box-shadow: 0 0 5px 2px rgba(100, 100, 100, 0.5);
+}
+
+.input-icon {
+  margin: 0px 6px;
+  color: #000;
+  font-size: 24px;
+}
+
+.input-field {
+  flex: 1;
+  padding: 15px 0px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+}
+
+.toggle-password {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px;
+
+  border: none;
+  background: none;
+  outline: none;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.submit-button {
+  padding: 15px 20px;
+  margin-top: 16px;
+
+  background: var(--btn-inactive);
+  border: 2px solid var(--btn-inactive-border);
+  border-radius: 12px;
+
+  cursor: pointer;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+  box-shadow: 0 0 2px 2px var(--btn-active-hover);
+  transform: scale(1.01);
+}
+
+.submit-button.active {
+  border: 2px solid var(--btn-active-border);
+  background: var(--btn-active);
+  pointer-events: all;
+}
+
+.submit-button p {
+  font-size: 1rem;
+  font-weight: bold;
+}

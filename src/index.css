@@ -1,0 +1,119 @@
+:root {
+  --red-100: #ffebeb;
+  --red-200: #fbb3b3;
+  --red-300: #f27777;
+  --red-400: #eb4d4d;
+  --red-500: #eb2323;
+  --red-600: #d11515;
+  --red-700: #a80606;
+  --red-800: #7a0404;
+  --red-900: #470000;
+
+  --green-100: #e5ffe8;
+  --green-200: #b1f3b7;
+  --green-300: #82ee8b;
+  --green-400: #50e15c;
+  --green-500: #2acd38;
+  --green-600: #16b023;
+  --green-700: #098a14;
+  --green-800: #07680f;
+  --green-900: #004005;
+
+  --blue-100: #ebf5ff;
+  --blue-200: #c0dbf7;
+  --blue-300: #7bc2ee;
+  --blue-400: #509eec;
+  --blue-500: #2387eb;
+  --blue-600: #166dc4;
+  --blue-700: #0c549b;
+  --blue-800: #083b6f;
+  --blue-900: #002040;
+
+  --orange-100: #fff7e5;
+  --orange-200: #f7dab0;
+  --orange-300: #f1bf7a;
+  --orange-400: #e6a84b;
+  --orange-500: #d9891a;
+  --orange-600: #b47113;
+  --orange-700: #92590b;
+  --orange-800: #6e4307;
+  --orange-900: #472a00;
+
+  --gray-100: #f1f1f3;
+  --gray-200: #dbdbe0;
+  --gray-300: #bcbdc3;
+  --gray-400: #97989d;
+  --gray-500: #84848a;
+  --gray-600: #5b5c63;
+  --gray-700: #3b3b42;
+  --gray-800: #23242b;
+  --gray-900: #171821;
+}
+
+:root[app-theme="light"] {
+  --login-bg-filter: blur(1px) invert(1);
+
+  /*=== Common ===*/
+  --bg-primary: var(--gray-100);
+  --bg-secondary: var(--gray-200);
+
+  --border-primary: var(--gray-300);
+  --border-secondary: var(--gray-400);
+
+  --text-primary: var(--gray-900);
+
+  /*=== Sidebar ===*/
+  --sidebar-bg: var(--gray-200);
+  --sidebar-active: var(--gray-300);
+  --sidebar-active-element: var(--red-700);
+
+  /* === Button ===*/
+  --btn-inactive: var(--gray-300);
+  --btn-inactive-hover: var(--gray-400);
+  --btn-active: var(--red-400);
+  --btn-active-hover: var(--red-500);
+
+  --btn-border-inactive: var();
+  --btn-border-active: var();
+
+  /*=== Toggle ===*/
+  --toggle-bg: var(--gray-300);
+  --toggle-ball: var(--gray-400);
+
+  /*=== Input ===*/
+  --input-bg: var(--gray-300);
+}
+
+:root[app-theme="dark"] {
+  --login-bg-filter: blur(1px);
+
+  /*=== Common ===*/
+  --bg-primary: var(--gray-900);
+  --bg-secondary: var(--gray-800);
+
+  --border-primary: var(--gray-700);
+  --border-secondary: var(--gray-600);
+
+  --text-primary: var(--gray-100);
+
+  /*=== Sidebar ===*/
+  --sidebar-bg: var(--gray-800);
+  --sidebar-active: var(--gray-700);
+  --sidebar-active-element: var(--red-300);
+
+  /* === Button ===*/
+  --btn-inactive: var(--gray-700);
+  --btn-inactive-hover: var(--gray-600);
+  --btn-active: var(--red-400);
+  --btn-active-hover: var(--red-500);
+
+  --btn-border-inactive: var();
+  --btn-border-active: var(--orange-400);
+
+  /*=== Toggle ===*/
+  --toggle-bg: var(--red-400);
+  --toggle-ball: var(--gray-300);
+
+  /*=== Input ===*/
+  --input-bg: var(--gray-700);
+}

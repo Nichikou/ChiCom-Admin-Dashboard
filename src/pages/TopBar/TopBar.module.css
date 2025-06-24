@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*===Top Bar Container===*/
+.top-bar-container {
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  height: 7.5%;
+  width: 95%;
+  left: 5%;
+  padding: 8px 8px;
+
+  background: var(--sidebar-bg);
+  border-bottom: 2px solid var(--border-primary);
+
+  transition: background-color 0.3s ease;
+}
+
+/*===Search Bar===*/
+.search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.search-bar-wrapper .lookup-icon {
+  margin-right: 8px;
+  color: var(--text-primary);
+}
+
+.search-bar-wrapper input {
+  background: inherit;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+}
+
+/*===Current Menu Label===*/
+.current-menu-label {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.current-menu-label::first-letter {
+  text-transform: uppercase;
+}
+
+/*===Light/Dark Mode===*/
+.theme-select-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  position: relative;
+  margin-left: auto;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  background: var(--input-bg);
+
+  overflow: hidden;
+}
+
+.theme-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.theme-icon {
+  font-size: 28px;
+  color: var(--text-primary);
+}
+
+/*===Notifications===*/
+.notification-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  position: relative;
+  margin-right: 0;
+  margin-left: 8px;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  background: var(--input-bg);
+
+  overflow: hidden;
+}
