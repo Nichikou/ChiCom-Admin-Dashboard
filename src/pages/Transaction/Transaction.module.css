@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.transaction-container {
+  display: flex;
+
+  position: fixed;
+  left: 5%;
+  top: 7.5%;
+  width: 95%;
+  height: 92.5%;
+
+  background-color: blanchedalmond;
+
+  transition: background-color 0.3s ease;
+}

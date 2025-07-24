@@ -49,9 +49,8 @@ const SideBar = () => {
         {menuList.map((item) => {
           const Icon = item.icon;
           return (
-            <div className={styles["section-wrapper"]}>
+            <div className={styles["section-wrapper"]} key={item.id}>
               <button
-                key={item.id}
                 className={`${styles["section"]} ${
                   activeMenu === item.id && styles["active"]
                 }`}

@@ -82,6 +82,12 @@
 
   /*=== Input ===*/
   --input-bg: var(--gray-300);
+
+  /*=== Card ===*/
+  --card-separator: var(--gray-400);
+  --card-status-denied: var(--red-600);
+  --card-status-pending: var(--orange-600);
+  --card-status-approved: var(--green-600);
 }
 
 :root[app-theme="dark"] {
@@ -116,4 +122,9 @@
 
   /*=== Input ===*/
   --input-bg: var(--gray-700);
+
+  --card-separator: var(--gray-600);
+  --card-status-denied: var(--red-400);
+  --card-status-pending: var(--orange-400);
+  --card-status-approved: var(--green-400);
 }

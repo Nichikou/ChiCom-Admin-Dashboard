@@ -1,11 +1,13 @@
 import LogInScreen from "./auth/LogInScreen/LogInScreen";
 import SideBar from "./pages/SideBar/SideBar";
 import TopBar from "./pages/TopBar/TopBar";
+import History from "./pages/History/History";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import "./App.css";
 import { useAuthContext } from "./context/AuthContext";
-import { MenuProvider } from "./context/MenuContext";
-import { useState } from "react";
+import { useMenuContext } from "./context/MenuContext";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Transaction from "./pages/Transaction/Transaction";
 
 const animationInitial = {
   scale: 0.3,
@@ -31,6 +33,7 @@ const animationTransition: Transition = {
 
 const App = () => {
   const { isAuthorized } = useAuthContext();
+  const { activeMenu } = useMenuContext();
 
   return (
     <>
@@ -48,19 +51,21 @@ const App = () => {
               <LogInScreen />
             </motion.div>
           ) : (
-            <MenuProvider>
-              <motion.div
-                key="main-app"
-                initial={animationInitial}
-                animate={animationAnimate}
-                exit={{ ...animationExit, scale: 0.3 }}
-                transition={animationTransition}
-                className="app-container"
-              >
-                <SideBar />
-                <TopBar />
-              </motion.div>
-            </MenuProvider>
+            <motion.div
+              key="main-app"
+              initial={animationInitial}
+              animate={animationAnimate}
+              exit={{ ...animationExit, scale: 0.3 }}
+              transition={animationTransition}
+              className="app-container"
+            >
+              <SideBar />
+              <TopBar />
+              {activeMenu === "dashboard" && <Dashboard />}
+              {activeMenu === "transaction" && <Transaction />}
+              {activeMenu === "history" && <History />}
+              {activeMenu === "profile" && 1 == 1}
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

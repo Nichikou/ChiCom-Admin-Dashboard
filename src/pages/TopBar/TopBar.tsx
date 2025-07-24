@@ -65,9 +65,9 @@ const TopBar = () => {
       </button>
 
       {/*Notifications*/}
-      <div className={styles["notification-wrapper"]}>
+      <button className={styles["notification-wrapper"]}>
         <IoNotificationsOutline className={styles["theme-icon"]} />
-      </div>
+      </button>
 
       {/*User Information*/}
       <div className={styles["user-wrapper"]}></div>
