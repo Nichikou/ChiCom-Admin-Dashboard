@@ -17,44 +17,69 @@ const sampleUser = [
 //Auth context
 const AuthContext = createContext<
   | {
-      isAuthorized: boolean;
-      user: { name: string; password: string } | null;
+      accessToken: string;
+      refreshToken: string;
+      isAuthorized: Boolean;
       login: (name: string, password: string) => void;
+      validate: () => void;
       logout: () => void;
     }
   | undefined
 >(undefined);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  //useState hook
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
-  const [user, setUser] = useState<{ name: string; password: string } | null>(
-    null
-  );
+  const [isAuthorized, setIsAuthorized] = useState<Boolean>(false);
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [refreshToken, setRefreshToken] = useState<string>("");
 
   //Login method
   const login = useCallback((name: string, password: string) => {
-    const matched = sampleUser.find(
-      (u) => u.name === name && u.password === password
-    );
+    fetch("http://localhost:4000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: name, password: password }),
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Error ${response.status}: ${errText}`);
+        }
 
-    if (!matched) {
-      alert("Invalid");
-      return;
-    }
-
-    setIsAuthorized(true);
-    setUser({ name, password });
+        return response.json();
+      })
+      .then((data) => {
+        setAccessToken(data.accessToken);
+        setRefreshToken(data.refreshToken);
+        setIsAuthorized(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.message.includes(403)) {
+          alert("Invalid");
+        }
+      });
   }, []);
+
+  const validate = useCallback(() => {}, []);
 
   //Logout method
   const logout = useCallback(() => {
     setIsAuthorized(false);
-    setUser(null);
+    setAccessToken("");
+    setRefreshToken("");
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthorized, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        accessToken,
+        refreshToken,
+        isAuthorized,
+        login,
+        validate,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

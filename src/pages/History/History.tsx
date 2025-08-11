@@ -11,7 +11,7 @@ import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import { FaHashtag } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { isNumericalString } from "framer-motion";
+import { useAuthContext } from "../../context/AuthContext";
 
 interface TRANSACTION {
   transact_id: string;
@@ -55,6 +55,9 @@ const filterOptions: FILTER_CAT[] = [
 ];
 
 const History = () => {
+  //Context
+  const { isAuthorized, logout, accessToken } = useAuthContext();
+
   //Received List from API
   const [receivedList, setReceivedList] = useState<TRANSACTION[]>([]);
 
@@ -76,7 +79,7 @@ const History = () => {
   //API calls
   useEffect(() => {
     fetch(
-      `http://localhost:3000/transaction?page=${curPage}${
+      `http://localhost:3000/history?page=${curPage}${
         selectedFilters.Status === null
           ? ""
           : `&status=${selectedFilters.Status}`
@@ -84,14 +87,25 @@ const History = () => {
         selectedFilters.Package === null
           ? ""
           : `&package=${selectedFilters.Package}`
-      }`
+      }`,
+      { method: "GET", headers: { authorization: `Bearer ${accessToken}` } }
     )
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(`Error ${res.status}: ${errText}`);
+        }
+
+        return res.json();
+      })
       .then((data) => {
+        console.log("Fetched");
         setReceivedList(data.body);
         setTotalPage(data.totalPage);
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        logout();
+      });
   }, [curPage, selectedFilters]);
 
   //Next-Prev Page buttons
@@ -160,12 +174,15 @@ const History = () => {
           {isFilterMenuOpen && (
             <div className={styles["filter-menu"]}>
               {filterOptions.map((category) => (
-                <div className={styles["filter-category"]}>
+                <div
+                  id={category.filter_category}
+                  className={styles["filter-category"]}
+                >
                   <span className={styles["category-label"]}>
                     {category.filter_category}
                   </span>
                   {category.filter_items.map((option) => (
-                    <label>
+                    <label id={option.id}>
                       <input
                         type="checkbox"
                         checked={

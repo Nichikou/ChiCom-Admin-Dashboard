@@ -1,196 +1,46 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  type ChangeEvent,
-  type FormEvent,
-} from "react";
-import styles from "./History.module.css";
-import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
-import { FaHashtag } from "react-icons/fa";
-import { FiFilter } from "react-icons/fi";
-import { IoMdArrowDropdown } from "react-icons/io";
-
-interface TRANSACTION {
-  transact_id: string;
-  package: string;
-  date: string;
-  price: string;
-  lang: string;
-  status: string;
-}
-
-type filter_category_keys = "Status" | "Package";
-interface filterItems {
-  id: string;
-  label: string;
-}
-
-interface filter_category {
-  filter_category: string;
-  filter_items: filterItems[];
-}
-const filterOptions: filter_category[] = [
-  {
-    filter_category: "Status",
-    filter_items: [
-      { id: "status_denied", label: "Status: Denied" },
-      { id: "status_pending", label: "Status: Pending" },
-      { id: "status_approved", label: "Status: Approved" },
-    ],
-  },
-
-  {
-    filter_category: "Package",
-    filter_items: [
-      { id: "package_basic", label: "Package: Basic" },
-      { id: "package_standard", label: "Package: Standard" },
-      { id: "package_premium", label: "Package: Premium" },
-    ],
-  },
-];
-
-const sortOptions = [
-  { id: "newest", label: "Newest First" },
-  { id: "oldest", label: "Oldest First" },
-];
-
-const History = () => {
-  const [transactList, setTransactList] = useState<TRANSACTION[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageInput, setPageInput] = useState<string>("1");
-  const [filterMenuOpen, setFilterMenuOpen] = useState<Boolean>(false);
-  const [selectedFilter, setSelectedFilter] = useState<
-    Record<filter_category_keys, string | null>
-  >({ Status: null, Package: null });
-  const [selectedSort, setSelectedSort] = useState<string>("oldest");
-  const [totalPage, setTotalPage] = useState<number>(1);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const filterMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetch(
-      `http://localhost:3000/transaction?page=${currentPage}${
-        selectedFilter.Package === null
-          ? ""
-          : `&filter=${selectedFilter.Package}`
-      }${
-        selectedFilter.Status === null ? "" : `&filter=${selectedFilter.Status}`
-      }&sort=${selectedSort}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setTransactList(data.body);
-        setTotalPage(data.totalPage);
-      })
-      .catch((err) => console.log(err));
-  }, [currentPage, selectedFilter, selectedSort]);
-
-  const nextPage = () => {
-    setCurrentPage(currentPage >= totalPage ? totalPage : currentPage + 1);
-  };
-
-  const previousPage = () => {
-    setCurrentPage(currentPage <= 1 ? 1 : currentPage - 1);
-  };
-
-  useEffect(() => {
-    setPageInput(currentPage.toString());
-  }, [currentPage]);
-
-  const handlePageInputChanges = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setPageInput(event.target.value);
-    },
-    [pageInput]
-  );
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        filterMenuRef.current &&
-        !filterMenuRef.current.contains(event.target as Node)
-      ) {
-        setFilterMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  });
-
-  const handleSubmission = useCallback(
-    (event: FormEvent) => {
-      event.preventDefault();
-      inputRef.current?.blur();
-
-      const parsed = parseInt(pageInput || "", 10);
-      setCurrentPage(
-        !isNaN(parsed) && parsed >= 1 && parsed <= totalPage ? parsed : 1
-      );
-
-      setPageInput(currentPage.toString());
-    },
-    [pageInput]
-  );
-
-  const handleFilterOption = (
-    category: filter_category_keys,
-    option: string
-  ) => {
-    setSelectedFilter((prev) => ({
-      ...prev,
-      [category]: prev[category] === option ? null : option,
-    }));
-  };
-
-  return (
-    <div className={styles["history-container"]}>
+<div className={styles["history-container"]}>
       <div className={styles["utilities-bar"]}>
         <div className={styles["filter-wrapper"]} ref={filterMenuRef}>
           <button
             className={styles["filter-menu-btn"]}
-            onClick={() => setFilterMenuOpen(!filterMenuOpen)}
+            onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
           >
             <FiFilter className={styles["filter-icon"]} />
             <div>Filters</div>
             <IoMdArrowDropdown className={styles["dropdown-icon"]} />
           </button>
 
-          {filterMenuOpen && (
+          {isFilterMenuOpen && (
             <div className={styles["filter-menu"]}>
-              {filterOptions.map((type) => (
-                <>
-                  <div className={styles["filter-category"]}>
-                    {type.filter_category}
-                  </div>
-
-                  {type.filter_items.map((options) => {
-                    return (
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={
-                            options.id ===
-                            selectedFilter[
-                              type.filter_category as filter_category_keys
-                            ]
-                          }
-                          onChange={() =>
-                            handleFilterOption(
-                              type.filter_category as filter_category_keys,
-                              options.id
-                            )
-                          }
-                        />
-                        <span className={styles[".filter-label"]}>
-                          {options.label}
-                        </span>
-                      </label>
-                    );
-                  })}
-                </>
+              {filterOptions.map((category) => (
+                <div
+                  id={category.filter_category}
+                  className={styles["filter-category"]}
+                >
+                  <span className={styles["category-label"]}>
+                    {category.filter_category}
+                  </span>
+                  {category.filter_items.map((option) => (
+                    <label id={option.id}>
+                      <input
+                        type="checkbox"
+                        checked={
+                          option.id ===
+                          selectedFilters[category.filter_category]
+                        }
+                        onChange={() =>
+                          handleSelectedFilters(
+                            category.filter_category,
+                            option.id
+                          )
+                        }
+                      />
+                      <span className={styles["item-label"]}>
+                        {option.label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
               ))}
             </div>
           )}
@@ -202,17 +52,17 @@ const History = () => {
           </button>
           <form
             onSubmit={(event) => {
-              handleSubmission(event);
+              handleSelectPageSubmission(event);
             }}
           >
             <input
-              ref={inputRef}
+              ref={selectPageRef}
               type="text"
-              value={pageInput}
+              value={selectPage}
               autoComplete="off"
               className={styles["page-title"]}
               onChange={(event) => {
-                handlePageInputChanges(event);
+                handleSelectPageChanges(event);
               }}
             ></input>
           </form>
@@ -222,9 +72,13 @@ const History = () => {
           </button>
         </div>
       </div>
-
+      <h3 className={styles["page-count"]}>
+        {totalPage >= 1
+          ? `Showing ${curPage} out of ${totalPage} pages`
+          : "No Results"}
+      </h3>
       <div className={styles["card-container"]}>
-        {transactList.map((item) => {
+        {receivedList.map((item) => {
           return (
             <div className={styles["card-item"]} key={item.transact_id}>
               <div className={styles["item-header"]}>
@@ -263,7 +117,3 @@ const History = () => {
         })}
       </div>
     </div>
-  );
-};
-
-export default History;

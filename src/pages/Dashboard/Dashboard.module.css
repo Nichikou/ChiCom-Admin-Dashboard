@@ -13,7 +13,8 @@
   width: 95%;
   height: 92.5%;
 
-  background-color: teal;
+  background-color: inherit;
+  color: white;
 
   transition: background-color 0.3s ease;
 }
