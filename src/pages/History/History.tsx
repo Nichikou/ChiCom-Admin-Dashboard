@@ -12,6 +12,7 @@ import { FaHashtag } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useAuthContext } from "../../context/AuthContext";
+import { useAuthFetch } from "../../api/authFetch";
 
 interface TRANSACTION {
   transact_id: string;
@@ -56,7 +57,8 @@ const filterOptions: FILTER_CAT[] = [
 
 const History = () => {
   //Context
-  const { isAuthorized, logout, accessToken } = useAuthContext();
+  const authFetch = useAuthFetch();
+  const { accessToken } = useAuthContext();
 
   //Received List from API
   const [receivedList, setReceivedList] = useState<TRANSACTION[]>([]);
@@ -78,34 +80,26 @@ const History = () => {
 
   //API calls
   useEffect(() => {
-    fetch(
-      `http://localhost:3000/history?page=${curPage}${
-        selectedFilters.Status === null
-          ? ""
-          : `&status=${selectedFilters.Status}`
-      }${
-        selectedFilters.Package === null
-          ? ""
-          : `&package=${selectedFilters.Package}`
-      }`,
-      { method: "GET", headers: { authorization: `Bearer ${accessToken}` } }
-    )
-      .then(async (res) => {
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(`Error ${res.status}: ${errText}`);
-        }
+    const fetchHistory = async () => {
+      const data = await authFetch(
+        `http://localhost:3000/history?page=${curPage}${
+          selectedFilters.Status === null
+            ? ""
+            : `&status=${selectedFilters.Status}`
+        }${
+          selectedFilters.Package === null
+            ? ""
+            : `&package=${selectedFilters.Package}`
+        }`
+      );
 
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Fetched");
+      if (data) {
         setReceivedList(data.body);
         setTotalPage(data.totalPage);
-      })
-      .catch((error) => {
-        logout();
-      });
+      }
+    };
+
+    fetchHistory();
   }, [curPage, selectedFilters]);
 
   //Next-Prev Page buttons

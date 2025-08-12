@@ -7,18 +7,14 @@ import {
   type ReactNode,
 } from "react";
 
-//Sample data
-const sampleUser = [
-  { name: "", password: "" },
-  { name: "Nichikou", password: "123" },
-  { name: "1", password: "1" },
-];
-
 //Auth context
 const AuthContext = createContext<
   | {
+      username: string;
       accessToken: string;
+      setAccessToken: (accessToken: string) => void;
       refreshToken: string;
+      setRefreshToken: (refreshToken: string) => void;
       isAuthorized: Boolean;
       login: (name: string, password: string) => void;
       validate: () => void;
@@ -28,6 +24,7 @@ const AuthContext = createContext<
 >(undefined);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const [username, setUsername] = useState<string>("");
   const [isAuthorized, setIsAuthorized] = useState<Boolean>(false);
   const [accessToken, setAccessToken] = useState<string>("");
   const [refreshToken, setRefreshToken] = useState<string>("");
@@ -50,6 +47,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       .then((data) => {
         setAccessToken(data.accessToken);
         setRefreshToken(data.refreshToken);
+        setUsername(data.username);
         setIsAuthorized(true);
       })
       .catch((error) => {
@@ -72,8 +70,11 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        username,
         accessToken,
+        setAccessToken,
         refreshToken,
+        setRefreshToken,
         isAuthorized,
         login,
         validate,
